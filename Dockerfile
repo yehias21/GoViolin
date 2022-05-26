@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 FROM golang:alpine3.15 as build
 RUN mkdir -p /app
 WORKDIR /app
