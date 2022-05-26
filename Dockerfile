@@ -1,12 +1,15 @@
 # syntax=docker/dockerfile:1
-FROM golang:1.16-alpine
-WORKDIR /app
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
-COPY *.go ./
-RUN go mod init github.com/yehias21/GoViolin
+FROM golang:alpine as builder
+RUN mkdir -p /src
+WORKDIR /src
+copy . /src
+RUN go get -d -v
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main
+# Set the binary as the entrypoint of the container
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD main || exit 1
 EXPOSE 8080
-RUN go build -o go
-HEALTHCHECK --interval=1m --timeout=20s --start-period=30s --retries=3 \  
-    CMD go test || exit 1
+FROM alpine
+COPY --from=build/src  /app/
+WORKDIR /app
+ENTRYPOINT [ "./main" ]
