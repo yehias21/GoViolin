@@ -21,7 +21,7 @@ pipeline {
         failure{
             mail to: 'yehia.salah.ms@alexu.edu.eg',
              subject:"The ${currentBuild.fullDisplayName} pipeline has failed:(",
-             body: "Error can be found in: ${env.BUILD_URL}"
+             body: "Error has occured"
         }
     }
 }
