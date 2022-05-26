@@ -12,7 +12,7 @@ pipeline {
         echo "Building docker image..."
         script{
           try{
-            sh 'docker build -t yehias21/goviolan'
+            sh 'docker build -t yehias21/goviolin'
           }
           catch(e) {
            echo "Docker Imaged failed to build!"
@@ -27,7 +27,7 @@ pipeline {
         echo "Pushing image to dockerHub"
         withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
           sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-          sh 'docker push yehias21/goviolan'
+          sh 'docker push yehias21/goviolin'
         }
       }
     }
