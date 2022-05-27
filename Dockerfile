@@ -1,4 +1,3 @@
-  GNU nano 4.8                                                                                        Dockerfile                                                                                                   
 # syntax=docker/dockerfile:1
 FROM golang:alpine as builder
 RUN mkdir -p /src
