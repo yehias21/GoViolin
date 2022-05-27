@@ -1,9 +1,10 @@
+  GNU nano 4.8                                                                                        Dockerfile                                                                                                   
 # syntax=docker/dockerfile:1
 FROM golang:alpine as builder
 RUN mkdir -p /src
 WORKDIR /src
 copy . /src
-RUN go get -d -v
+RUN go mod init
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main
 # Set the binary as the entrypoint of the container
 HEALTHCHECK --interval=30s --timeout=3s \
