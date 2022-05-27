@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent {label 'yehia'}
   stages {
     stage('git checkout') {
       steps {
@@ -12,7 +12,7 @@ pipeline {
         echo "Building docker image..."
         script{
           try{
-            sh 'docker build -t yehias21/goviolin'
+            sh 'docker build -t yehias21/goviolin .'
           }
           catch(e) {
            echo "Docker Imaged failed to build!"
@@ -22,11 +22,10 @@ pipeline {
       }
     }
     stage('Docker Push') {
-      agent any
       steps {
         echo "Pushing image to dockerHub"
-        withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+        withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+          sh "docker login -u '${env.dockerHubUser}' -p '${env.dockerHubPassword}'"
           sh 'docker push yehias21/goviolin'
         }
       }
@@ -39,6 +38,8 @@ pipeline {
                 {
                     sh "kubectl apply -f ./deployment.yaml"
                 }
+            }
+        }
   }
     post{
        success {
