@@ -10,6 +10,6 @@ HEALTHCHECK --interval=30s --timeout=3s \
   CMD main || exit 1
 EXPOSE 8080
 FROM alpine
-COPY --from=build/src  /app/
+COPY --from=builder:/src  /app/
 WORKDIR /app
 ENTRYPOINT [ "./main" ]
